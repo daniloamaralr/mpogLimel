@@ -95,6 +95,14 @@ arsort($vetor_certo);
 //print_r($vetor_certo);
 
 //calculando recorrencias
+$recorrenciaTresAnos = count($vetor_certo) / 3;
+$recorrenciaQuinzeAnos = count($vetor_certo) / 15;
+$difRecorrencia = $recorrenciaTresAnos - $recorrenciaQuinzeAnos;
+
+//pegando valores baseado na recorrencia
+$valor_certo_recorrencia = array_slice($valor_certo,3,$difRecorrencia + 3);
+
+print_r($valor_certo_recorrencia);
 
 
 
