@@ -102,7 +102,10 @@ $difRecorrencia = $recorrenciaTresAnos - $recorrenciaQuinzeAnos;
 //pegando valores baseado na recorrencia
 $valor_certo_recorrencia = array_slice($valor_certo,3,$difRecorrencia + 3);
 
-print_r($valor_certo_recorrencia);
+//print_r($valor_certo_recorrencia);
+
+//calculando media
+$media = array_sum($valor_certo_recorrencia) / count($valor_certo_recorrencia); 
 
 
 
