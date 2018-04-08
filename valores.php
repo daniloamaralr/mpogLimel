@@ -1,4 +1,5 @@
 <?php
+include 'conection.php';
 //include the file that loads the PhpSpreadsheet classes
 require 'spreadsheet/vendor/autoload.php';
 
@@ -11,23 +12,6 @@ $inputFileType = 'Xlsx';
 $path = "C:/xampp/htdocs/mpogLinel/excel/";
 $fxls = $_POST['arq'];
 $fullPath =  $path.$fxls;
-
-// /**  Define a Read Filter class implementing \PhpOffice\PhpSpreadsheet\Reader\IReadFilter  */
-// class MyReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
-// {
-//     public function readCell($column, $row, $worksheetName = '') {
-//         //  Read rows 1 to 7 and columns A to E only
-//         if ($row >= 1 && $row <= 7) {
-//             if (in_array($column,range('A','E'))) {
-//                 return true;
-//             }
-//         }
-//         return false;
-//     }
-// }
-
-/**  Create an Instance of our Read Filter  **/
-//$filterSubset = new MyReadFilter();
 
 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($fullPath);
 
@@ -55,7 +39,11 @@ for($i = 16; $i <= count($sheetData);$i++){
     array_push($valor_valores,$sheetData[$i]['G']);
     array_push($data_valores,$sheetData[$i]['C']);
 } 
+// $data = strtotime($data_valores[0]);
+// echo $data;
+// break;
 
+gravaBancoValores($valor_valores,$data_valores);
 //print_r($valor_valores);
 //print_r($data_valores);
 
@@ -100,40 +88,16 @@ $recorrenciaQuinzeAnos = count($vetor_certo) / 15;
 $difRecorrencia = $recorrenciaTresAnos - $recorrenciaQuinzeAnos;
 
 //pegando valores baseado na recorrencia
-$valor_certo_recorrencia = array_slice($valor_certo,3,$difRecorrencia + 3);
-
+$valor_certo_recorrencia = array_slice($vetor_certo,3,$difRecorrencia + 3);
+//print_r($valor_certo_recorrencia);
 //print_r($valor_certo_recorrencia);
 
 //calculando media
 $media = array_sum($valor_certo_recorrencia) / count($valor_certo_recorrencia); 
 
+//print_r($media);
 
 
-
-
-
-
-// print_r($valor_valores);
-// print_r($data_valores);
-
-
-
-//gravar no banco
-
-
-
-
-
-
-//read excel data and store it into an array
-//$xls_data = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-//$count = count($xls_data);
-
-//print_r($xls_data);
-
-
-//echo $xls_data[1];
-// echo "Arquivo: " . $_POST['arq'];
 
 include "index.php" 
 ?>

@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>MPOG - LINEL</title>
+        <title>MPOG - LIMEL</title>
         <link rel="stylesheet" href="tarefas.css" type="text/css" />
     </head>
 </html>
