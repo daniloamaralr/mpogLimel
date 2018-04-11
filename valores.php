@@ -11,6 +11,11 @@ $inputFileType = 'Xlsx';
 
 $path = "C:/xampp/htdocs/mpogLinel/excel/";
 $fxls = $_POST['arq'];
+
+//pegando codigo da estacao pelo nome do arquivo
+$nome_arquivo = explode(" ",$fxls);
+$codigoEstacao = intval($nome_arquivo[0]);
+
 $fullPath =  $path.$fxls;
 
 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($fullPath);
@@ -32,6 +37,7 @@ $spreadsheet = $reader->load($fullPath);
 
 $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
+
 //pegando data e valores
 $data_valores = [];
 $valor_valores = [];
@@ -43,7 +49,7 @@ for($i = 16; $i <= count($sheetData);$i++){
 // echo $data;
 // break;
 
-gravaBancoValores($valor_valores,$data_valores);
+gravaBancoValores($valor_valores,$data_valores,$codigoEstacao);
 //print_r($valor_valores);
 //print_r($data_valores);
 
@@ -71,9 +77,8 @@ for($i = 0; $i < count($data_valores);$i++){
     }
 
 }
-//print_r($maior_data_ano_valor);
-//print_r($maior_data_ano);
 
+gravaBancoValoresNovos($maior_data_ano,$maior_data_ano_valor,$codigoEstacao);
 
 //vetor com indice sendo as datas e os seus respectivos valores
 $vetor_certo = array_combine($maior_data_ano,$maior_data_ano_valor);
@@ -83,19 +88,19 @@ arsort($vetor_certo);
 //print_r($vetor_certo);
 
 //calculando recorrencias
-$recorrenciaTresAnos = count($vetor_certo) / 3;
-$recorrenciaQuinzeAnos = count($vetor_certo) / 15;
-$difRecorrencia = $recorrenciaTresAnos - $recorrenciaQuinzeAnos;
+$recorrenciaTresAnos = round(count($vetor_certo) / 3);
+$recorrenciaVinteAnos = round(count($vetor_certo) / 20);
+$difRecorrencia = $recorrenciaTresAnos - $recorrenciaVinteAnos;
 
 //pegando valores baseado na recorrencia
-$valor_certo_recorrencia = array_slice($vetor_certo,3,$difRecorrencia + 3);
+$valor_certo_recorrencia = array_slice($vetor_certo,$recorrenciaVinteAnos,$difRecorrencia + $recorrenciaVinteAnos);
 //print_r($valor_certo_recorrencia);
 //print_r($valor_certo_recorrencia);
 
 //calculando media
-$media = array_sum($valor_certo_recorrencia) / count($valor_certo_recorrencia); 
+$media = round(array_sum($valor_certo_recorrencia) / count($valor_certo_recorrencia)); 
 
-//print_r($media);
+gravaLimel($media,$codigoEstacao);
 
 
 
