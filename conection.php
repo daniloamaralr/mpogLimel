@@ -37,7 +37,7 @@ function gravaBancoValores($valor_valores,$data_valores,$codigoEstacao){
 
 function gravaBancoValoresNovos($maior_data_ano,$maior_data_ano_valor,$codigoEstacao){
 
-    $dsn = "mysql:dbname=mpog_limel;host=127.0.0.1";
+    $dsn = "mysql:dbname=mpog_lmeo;host=127.0.0.1";
     $dbuser = "root";
     $dbpass = "";
 
@@ -69,7 +69,9 @@ function gravaBancoValoresNovos($maior_data_ano,$maior_data_ano_valor,$codigoEst
             $data  = date("Y-m-d", strtotime($grava_ano[$i]));
             $valor = $grava_valor[$i];
     
-            $sql = "INSERT INTO valores_novo VALUES ('','$data',$valor, $codigoEstacao) ";
+            //echo $valor; exit;
+
+            $sql = "INSERT INTO valores_novo VALUES ('',$codigoEstacao,'$data', $valor) ";
             $sql = $pdo->query($sql);
         }catch(PDO_EXCEPTION $e){
             echo "Falhou inserção: ".$e->getMessage();
@@ -81,7 +83,7 @@ function gravaBancoValoresNovos($maior_data_ano,$maior_data_ano_valor,$codigoEst
 
 function gravaLimel($media_limel,$codigoEstacao){
 
-    $dsn = "mysql:dbname=mpog_limel;host=127.0.0.1";
+    $dsn = "mysql:dbname=mpog_lmeo;host=127.0.0.1";
     $dbuser = "root";
     $dbpass = "";
 
@@ -93,7 +95,7 @@ function gravaLimel($media_limel,$codigoEstacao){
     }
 
     try{
-        $sql = "INSERT INTO limel VALUES ('',$media_limel, $codigoEstacao) ";
+        $sql = "INSERT INTO lmeo VALUES ('',$codigoEstacao,$media_limel) ";
         $sql = $pdo->query($sql);
     }catch(PDO_EXCEPTION $e){
         echo "Falhou inserção: ".$e->getMessage();
@@ -102,5 +104,52 @@ function gravaLimel($media_limel,$codigoEstacao){
 
     
 } 
+
+function mapeiaEstacoes(){
+    $dsn = "mysql:dbname=mpog_lmeo;host=127.0.0.1";
+    $dbuser = "root";
+    $dbpass = "";
+
+    try{
+        $pdo = new PDO($dsn,$dbuser,$dbpass);
+        //echo("Conexão estabelecida com sucesso");
+    } catch(PDO_EXCEPTION $e){
+        echo "Falhou: ".$e->getMessage();
+    }
+        
+    try{
+        $sql = "SELECT Codigo FROM estacao ";
+        $sql = $pdo->query($sql);
+    }catch(PDO_EXCEPTION $e){
+        echo "Falhou seleção: ".$e->getMessage();
+    }
+
+    return $sql;
+
+}
+
+function achaDatasValores($codigoEstacao){
+    $dsn = "mysql:dbname=mpog_lmeo;host=127.0.0.1";
+    $dbuser = "root";
+    $dbpass = "";
+
+    try{
+        $pdo = new PDO($dsn,$dbuser,$dbpass);
+        //echo("Conexão estabelecida com sucesso");
+    } catch(PDO_EXCEPTION $e){
+        echo "Falhou: ".$e->getMessage();
+    }
+
+    try{
+        $sql = "SELECT Data, Maxima FROM vazoes WHERE EstacaoCodigo = " .$codigoEstacao ;
+        $sql = $pdo->query($sql);
+    }catch(PDO_EXCEPTION $e){
+        echo "Falhou seleção: ".$e->getMessage();
+    }
+    return $sql;
+
+
+
+}
 
 ?>
